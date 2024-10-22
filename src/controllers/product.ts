@@ -4,6 +4,7 @@ import ProductModel from "../models/ProductModel";
 import SubProductModel from "../models/SubProductModel";
 
 //Đây là một interface TypeScript được sử dụng để định nghĩa một kiểu dữ liệu cho một đối tượng có hai thuộc tính: label và value.
+// Khi bạn làm việc với các yêu cầu liên quan đến danh sách chọn (dropdown).
 interface SelectModel {
     label: string;
     value: string;
@@ -166,7 +167,7 @@ const handleRemoveCategoryInProducts = async (id: string) => {
     // Nếu có sản phẩm, cập nhật lại danh mục của sản phẩm
     if (products && products.length > 0) {
 
-         // Duyệt qua từng sản phẩm trong danh sách sản phẩm
+        // Duyệt qua từng sản phẩm trong danh sách sản phẩm
         products.forEach(async (item: any) => {
 
             // Lấy danh sách các danh mục của sản phẩm
@@ -293,7 +294,7 @@ const getProducts = async (req: any, res: any) => {
     filter.isDeleted = false;
 
     if (title) {
-        
+
         // (slug): là một chuỗi ký tự thân thiện với URL
         // VD: [Title]: "Điện Thoại iPhone 13 Pro Max" => [Slug]: "dien-thoai-iphone-13-pro-max"
         // sử dụng biểu thức chính quy ($regex) để tìm kiếm các sản phẩm có slug khớp với từ khóa.

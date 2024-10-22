@@ -105,7 +105,7 @@ const loginwithGoogle = async (req: any, res: any) => {
             delete newUser._doc.password;
 
             res.status(200).json({
-                message: 'Login successfully',
+                message: 'Login google successfully',
                 data: {
 
                     // Thêm dữ liệu người dùng vào phản hồi
@@ -126,7 +126,7 @@ const loginwithGoogle = async (req: any, res: any) => {
             // Tạo muối cho mã hóa mật khẩu
             const salt = await bcrypt.genSalt(10);
 
-            // Mã hóa mật khẩu ngẫu nhiên
+            // Mã hóa mật khẩu ngẫu nhiên khi người dùng đăng nhập với GG
             const hashpassword = await bcrypt.hash(generatorRandomText(6), salt);
 
             // Cập nhật mật khẩu đã mã hóa vào body

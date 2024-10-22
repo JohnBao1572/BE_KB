@@ -6,16 +6,18 @@ import Userrouter from './src/routers/user';
 import cors from 'cors'
 import productRouter from './src/routers/productRouter';
 import supplierRouter from './src/routers/supplier';
-
+import storage from './src/routers/storage';
 import { verifyToken } from './src/middlewares/verifyToken';
+
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
+console.log(PORT);
 const dbURL = process.env.MONGODB_URL || `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@cluster0.64jr2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 const secretKey = process.env.SECRET_KEY;  // Lấy giá trị SECRET_KEY từ biến môi trường
 
-console.log('Secret Key: (Đây là bí mật nên không bật mí)', secretKey);  // In ra secret key
+console.log('Secret Key: (Đây là bí mật nên không bật mí)');  // In ra secret key
 
 const app = express();
 
@@ -24,7 +26,8 @@ app.use(cors());
 
 app.use('/auth', Userrouter);
 app.use(verifyToken);
-app.use('/product', productRouter);
+app.use('/storage',storage);
+app.use('/products', productRouter);
 app.use('/supplier', supplierRouter);
 
 app.use(verifyToken);

@@ -18,7 +18,7 @@ const schema = new Schema({
 
     // Supplier đại diện cho nhà cung cấp của sản phẩm. Đây là thông tin quan trọng để biết nguồn gốc sản phẩm.
     // Ví dụ: Công ty ABC
-    supplier:{
+    supplier: {
         require: true,
         type: String,
     },
@@ -29,27 +29,27 @@ const schema = new Schema({
 
     // ExpiryDate là trường dùng để lưu trữ ngày hết hạn của sản phẩm, nếu có
     // Ví dụ: Bạn có thể lưu ngày hết hạn là 2024-10-31.
-    expiryDate:{
-        type:Date,
+    expiryDate: {
+        type: Date,
     },
 
-    images:{
-        type:[String],
+    images: {
+        type: [String],
     },
 
-    createdAt:{
-        type:Date,
-        default:Date.now,
+    createdAt: {
+        type: Date,
+        default: Date.now,
 
     },
 
-    updatedAt:{
-        type:Date,
+    updatedAt: {
+        type: Date,
         default: Date.now,
     },
 
-    isDeleted:{
-        type:Boolean,
+    isDeleted: {
+        type: Boolean,
         default: false,
     }
 })

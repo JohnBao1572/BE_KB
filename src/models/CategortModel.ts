@@ -15,12 +15,12 @@ const schema = new Schema({
     description: String,
     createAt: {
         type: Date,
-        required: Date.now,
+        default: Date.now,
     },
 
     updateAt: {
         type: Date,
-        required: Date.now,
+        default: Date.now,
     },
 
     isDeleted: {
