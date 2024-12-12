@@ -1,18 +1,18 @@
 import mongoose, { Schema } from "mongoose";
 
-const schema  = new Schema({
+const schema = new Schema({
     firstName: String,
     lastName: String,
-    email:{
+    email: {
         required: true,
         type: String,
     },
-    password:{
+    password: {
         required: true,
-        type:String,
+        type: String,
     },
 
 });
 
-const CustomerModel = mongoose.model('customer',schema);
+const CustomerModel = mongoose.model('customer', schema);
 export default CustomerModel;
