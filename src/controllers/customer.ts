@@ -8,36 +8,34 @@ import { handleSendMail } from "../utils/handleSendmail";
 
 const getVerifyCode = async (req: any, res: any) => {
     const body = req.body;
-
-    const { email } = req.body;
-    console.log(email);
+    const { id } = req.body;
+    const{code} = req.body;
 
     try {
         // Không cần phải viết email:body.email do đã định nghĩa = tên biến {email} rồi
-        const verify = await CustomerModel.findOne({ email });
+        const customer = await CustomerModel.findById(id);
 
-        if (verify) {
-            throw new Error('Email had already');
+        if (!customer) {
+            throw new Error('User is not found');
         }
 
-        // Tạo dãy 6 số bất kỳ
-        const code = generatorRandomText(6);
-        console.log(code);
+        const verifyCode = customer.verifyCode;
+        console.log(verifyCode);
 
-        // Gửi mã số đã tạo tới người dùng 
-        const result = await handleSendMail({
-            from: '"Maddison Foo Koch 👻" <jonnguyen1572@gmail.com>', // sender address
-            to: email, // list of receivers
-            subject: "Hello ✔", // Subject line
-            text: "Hello world?", // plain text body
-            html: `<h1>Mã xác minh ${code}</h1>`, // html body
-        });
+        if(code !== customer.verifyCode){
+            throw new Error('Invalid code');
+        }
 
-        console.log(result);
-        console.log(code);
+        await CustomerModel.findByIdAndUpdate(id, {
+            isVerify: true,
+
+            // Sau khi update mã xác nhận người dùng thì (verify) = rỗng
+            verifyCode: '',
+        })
+
         res.status(200).json({
-            message: 'VerifyCode sended',
-            data: [],
+            message: 'VerifyCode successfully',
+            data: {id:customer._id, email: customer.email},
         })
     } catch (error: any) {
         res.status(404).json({
@@ -50,6 +48,9 @@ const create = async (req: any, res: any) => {
     const body = req.body;
 
     try {
+        // Tạo dãy 6 số bất kỳ
+        const code = generatorRandomText(6);
+
         const customer = await CustomerModel.findOne({ email: body.email });
 
         if (customer) {
@@ -62,19 +63,34 @@ const create = async (req: any, res: any) => {
 
         body.password = hashpassword;
 
-        const newCustomer: any = new CustomerModel(body);
+        const newCustomer: any = new CustomerModel({ ...body, verifyCode: code });
         await newCustomer.save();
 
-        const accesstoken = await getAccesstoken({ _id: newCustomer._id, email: newCustomer.email, rule: 1 })
+        // const accesstoken = await getAccesstoken({ _id: newCustomer._id, email: newCustomer.email, rule: 1 })
 
         delete newCustomer._doc.password;
+        delete newCustomer._doc.verifyCode;
+
+
+
+        // Gửi mã số đã tạo tới người dùng 
+        const result = await handleSendMail({
+            from: '"Maddison Foo Koch 👻" <jonnguyen1572@gmail.com>', // sender address
+            to: body.email, // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: "Hello world?", // plain text body
+            html: `<h1>Mã xác minh ${code}</h1>`, // html body
+        });
+
+        console.log(code);
         res.status(200).json({
             message: 'Created account successfully!!',
-            data: {
-                ...newCustomer._doc,
-                accesstoken,
+            data: newCustomer,
+            // {
+            //     ...newCustomer._doc,
+            //     accesstoken,
 
-            },
+            // },
         });
     } catch (error: any) {
         console.log(error);

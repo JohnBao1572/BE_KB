@@ -23,7 +23,7 @@ export const handleSendMail = async (data: {
     try {
         const res = await transporter.sendMail(data);
         console.log(res);
-    } catch (error:any) {
+    } catch (error: any) {
         throw new Error(error.message)
     }
     // Còn bỏ khởi tạo biến (info) là hàm callback nên dùng thencatch (trong trường hợp lỗi cũng sẽ dễ nhận biết hơn)
@@ -42,5 +42,21 @@ export const handleSendMail = async (data: {
     //     })
 
     // send mail with defined transport object
-    
+
+
+    // // Tạo dãy 6 số bất kỳ
+        // const code = generatorRandomText(6);
+        // console.log(code);
+
+        // // Gửi mã số đã tạo tới người dùng 
+        // const result = await handleSendMail({
+        //     from: '"Maddison Foo Koch 👻" <jonnguyen1572@gmail.com>', // sender address
+        //     to: email, // list of receivers
+        //     subject: "Hello ✔", // Subject line
+        //     text: "Hello world?", // plain text body
+        //     html: `<h1>Mã xác minh ${code}</h1>`, // html body
+        // });
+
+        // console.log(result);
+        // console.log(code);
 };
