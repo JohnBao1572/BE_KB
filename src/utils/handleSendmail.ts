@@ -13,16 +13,16 @@ const transporter = nodemailer.createTransport({
 
 
 export const handleSendMail = async (data: {
-    from: string,
-    to: string, // list of receivers
-    subject: string, // Subject line
-    text: string, // plain text body
-    html: string, // html body
+    from: string;
+    to: string; // list of receivers
+    subject: string; // Subject line
+    text: string; // plain text body
+    html: string; // html body
 }) => {
     // hàm const info = await gì đó thì mới dùng trycatch (trycatch xong khởi tạo biến gì đó đó)
     try {
         const res = await transporter.sendMail(data);
-        console.log(res);
+        // console.log(res);
     } catch (error: any) {
         throw new Error(error.message)
     }

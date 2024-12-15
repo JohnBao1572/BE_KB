@@ -14,24 +14,24 @@ const schema = new Schema({
         type: String,
     },
 
-    isDeleted:{
+    isDeleted: {
+        type: Boolean,
+        default: true,
+    },
+
+    isVerify: {
         type: Boolean,
         default: false,
     },
 
-    isVerify:{
-        type: Boolean,
-        default:false,
-    },
-
     verifyCode: String,
 
-    createdAt:{
-        type:Date,
-        default:Date.now,
+    createdAt: {
+        type: Date,
+        default: Date.now,
     },
 
-    updatedAt:{
+    updatedAt: {
         type: Date,
         default: Date.now,
     }

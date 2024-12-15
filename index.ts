@@ -25,8 +25,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 app.use('/auth', Userrouter);
-app.use('/customer', customerRouter);
+app.use('/customers', customerRouter);
 
 app.use(verifyToken);
 app.use('/storage',storage);
