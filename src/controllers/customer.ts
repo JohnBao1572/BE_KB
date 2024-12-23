@@ -58,6 +58,33 @@ const getVerifyCode = async (req: any, res: any) => {
     }
 }
 
+const resendCode = async(req:any, res: any) =>{
+    const {id,email} = req.query;
+
+    try {
+        const code = generatorRandomText(6).trim();
+
+        await handleSendMail({
+            from: 'Support user', // sender address
+            to: email, // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: "Hello world?", // plain text body
+            html: `<h1>Mã xác minh ${code}</h1>`, // html body
+        });
+        console.log(code);
+
+        await CustomerModel.findByIdAndUpdate(id, {verifyCode:code});
+
+        res.status(200).json({
+            message: 'Resend new code successfully',
+            data: [],
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message:error.message
+        });
+    }
+}
 
 const create = async (req: any, res: any) => {
     const body = req.body;
@@ -111,4 +138,4 @@ const create = async (req: any, res: any) => {
     }
 }
 
-export { create, getVerifyCode };
+export { create, getVerifyCode, resendCode};
