@@ -58,8 +58,8 @@ const getVerifyCode = async (req: any, res: any) => {
     }
 }
 
-const resendCode = async(req:any, res: any) =>{
-    const {id,email} = req.query;
+const resendCode = async (req: any, res: any) => {
+    const { id, email } = req.query;
 
     try {
         const code = generatorRandomText(6).trim();
@@ -73,15 +73,15 @@ const resendCode = async(req:any, res: any) =>{
         });
         console.log(code);
 
-        await CustomerModel.findByIdAndUpdate(id, {verifyCode:code});
+        await CustomerModel.findByIdAndUpdate(id, { verifyCode: code });
 
         res.status(200).json({
             message: 'Resend new code successfully',
             data: [],
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
-            message:error.message
+            message: error.message
         });
     }
 }
@@ -90,13 +90,10 @@ const create = async (req: any, res: any) => {
     const body = req.body;
 
     try {
-
-
         const customer = await CustomerModel.findOne({ email: body.email });
-
-        // if (customer) {
-        //     throw new Error("Email had already");
-        // }
+        if (customer) {
+            throw new Error("Email had already");
+        }
 
         // Tạo dãy 6 số bất kỳ
         const code = generatorRandomText(6).trim();
@@ -138,4 +135,40 @@ const create = async (req: any, res: any) => {
     }
 }
 
-export { create, getVerifyCode, resendCode};
+const login = async (req: any, res: any) => {
+    const body = req.body;
+
+    const {email, password} = body;
+    try {
+        const customer:any = await CustomerModel.findOne({email});
+        if(!customer){
+            throw new Error('Email not found');
+        }
+
+        const isMatchPassword = await bcrypt.compare(password, customer.password);
+        if(!isMatchPassword){
+            throw new Error('Password is incorrect');
+        }
+
+        const item = {...customer._doc};
+        delete item.password;
+        // delete item.verifyCode;
+
+        const accesstoken = await getAccesstoken({_id: customer._id, email});
+        console.log("Generated accesstoken:", accesstoken);
+        item.accesstoken = accesstoken;
+
+        console.log(item);
+
+        res.status(200).json({
+            message: 'Login Successfully',
+            data: item,
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+export { create, getVerifyCode, resendCode, login };
