@@ -5,6 +5,7 @@ import { error } from 'console';
 import Userrouter from './src/routers/user';
 import cors from 'cors'
 import productRouter from './src/routers/productRouter';
+import promotionRouter from './src/routers/promotionRouter';
 import supplierRouter from './src/routers/supplier';
 import storage from './src/routers/storage';
 import { verifyToken } from './src/middlewares/verifyToken';
@@ -33,7 +34,7 @@ app.use('/products', productRouter);
 
 app.use(verifyToken);
 app.use('/storage',storage);
-
+app.use('/promotion', promotionRouter);
 app.use('/supplier', supplierRouter);
 
 app.use(verifyToken);
