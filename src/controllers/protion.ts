@@ -20,12 +20,12 @@ const addNewPromotion = async (req: any, res: any) => {
         })
     } catch (error: any) {
         res.status(404).json({
-            message:error.message || 'Lỗi server khi thêm khuyến mãi'
+            message: error.message || 'Lỗi server khi thêm khuyến mãi'
         })
     }
 };
 
-const getPromotions = async(req:any, res: any) =>{
+const getPromotions = async (req: any, res: any) => {
     const body = req.body;
 
     try {
@@ -35,11 +35,46 @@ const getPromotions = async(req:any, res: any) =>{
             message: 'Get promotions successfully',
             data: items,
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
-            message:error.message
+            message: error.message
+        })
+    }
+};
+
+const updatePromotion = async (req: any, res: any) => {
+    const { id } = req.query;
+    const body = req.body;
+
+    try {
+        await PromotionModel.findByIdAndUpdate(id, body);
+
+        res.status(200).json({
+            message: 'Updated promotions successfully',
+            data: [],
+        })
+    } catch (error: any) {
+        res.status(404).json({
+            message: error.message
+        })
+    }
+};
+
+const deletePromotion = async (req: any, res: any) => {
+    const { id } = req.query;
+
+    try {
+        await PromotionModel.findByIdAndDelete(id);
+
+        res.status(200).json({
+            message: 'Deleted Promotions successfully',
+            data: [],
+        })
+    } catch (error: any) {
+        res.status(404).json({
+            message: error.message
         })
     }
 }
 
-export { addNewPromotion, getPromotions };
+export { addNewPromotion, getPromotions, updatePromotion, deletePromotion };

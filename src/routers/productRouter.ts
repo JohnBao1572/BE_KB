@@ -9,11 +9,10 @@ router.get('/detail', getProductDetail);
 router.get('/get-categories', getCategories);
 router.get('/categories/detail', getCategoryDetail);
 router.get('/get-filter-values', getFilterValues);
+
 router.use(verifyToken);
 
 router.post('/add-new', addProduct);
-
-
 router.post('/add-sub-product', addSubProduct);
 router.delete('/delete', removeProduct);
 router.put('/update', updateProduct);
