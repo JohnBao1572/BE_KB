@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { addNewPromotion } from "../controllers/protion";
+import { addNewPromotion, getPromotions } from "../controllers/protion";
 
 const router = Router();
 
-router.post('/add-new-promotion', addNewPromotion)
+router.post('/add-new', addNewPromotion)
+router.get('/get-promotions', getPromotions)
 
 export default router;

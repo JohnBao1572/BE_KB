@@ -42,3 +42,5 @@ const schema = new Schema({
 }, { timestamps: true });
 
 const PromotionModel = mongoose.model('Promotion', schema);
+
+export default PromotionModel;
