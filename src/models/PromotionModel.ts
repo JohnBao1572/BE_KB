@@ -38,6 +38,11 @@ const schema = new Schema({
     endAt: Date,
 
     imageURL: String,
+
+    isDeleted:{
+        type: Boolean,
+        default: false,
+    },
     // timestamp là thời gian tạo thời gian kết thúc
 }, { timestamps: true });
 

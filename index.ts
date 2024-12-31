@@ -32,9 +32,10 @@ app.use('/customers', customerRouter);
 // Để product trên verify là để người dùng có thể thấy sản phẩm khi chưa đăng nhập nhưng để tránh việc khách hàng có thể tạo sản phẩm thì tôi sẽ gán thêm router verify trong router Product
 app.use('/products', productRouter);
 app.use('/promotions', promotionRouter);
-app.use(verifyToken);
-app.use('/storage',storage);
 
+app.use(verifyToken);
+
+app.use('/storage',storage);
 app.use('/supplier', supplierRouter);
 
 app.use(verifyToken);

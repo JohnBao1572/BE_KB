@@ -27,9 +27,14 @@ const addNewPromotion = async (req: any, res: any) => {
 
 const getPromotions = async (req: any, res: any) => {
     const body = req.body;
+    const {limit} = req.query;
 
     try {
-        const items = await PromotionModel.find();
+        // const parsedLimit = parseInt(limit, 10) || 0; // Chuyển thành số nguyên
+        // const items = await PromotionModel.find();
+        const items = await PromotionModel.find({isDeleted: false}).limit(limit);
+        // const items = await PromotionModel.find({ isDeleted: false }).limit(parsedLimit);
+
 
         res.status(200).json({
             message: 'Get promotions successfully',
