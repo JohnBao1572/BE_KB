@@ -44,10 +44,12 @@ const billProduct = new Schema(
 			default: 0,
 			required: true,
 		},
-		billId: {
+
+		billId:{
 			type: String,
 			required: true,
 		},
+
 		discount: {
 			type: Number,
 		},
@@ -61,8 +63,8 @@ const billProduct = new Schema(
 			default: false,
 		},
 	},
-	{ timestamps: true }
-);
+	{timestamps: true}
+)
 
 const SubProductModel = mongoose.model('subproducts', scheme);
 const BillProductModel = mongoose.model('billProducts', billProduct);

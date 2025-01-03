@@ -881,27 +881,29 @@ const getMinMaxPrice = async (id: string) => {
 	return [Math.min(...nums), Math.max(...nums)];
 };
 
-const getBestSellers = async (req: any, res: any) => {
+const getBestSellers = async (req:any, res: any) =>{
 	try {
+		// Lấy tát cả sản phẩm đã bán
+		// Push id vào mảng
+		// Lấy ra 8 id bị lặp lại nhiều nhần
 		const products = await BillProductModel.find();
 
-		if (products.length > 0) {
-		} else {
-			const items = await ProductModel.find().limit(8);
-			const data: any = [];
+		if(products.length > 0){
 
-			items.forEach(async (item: any) => {
-				data.push({ ...item._doc, price: await getMinMaxPrice(item._id) });
+		} else{
+			const items= await ProductModel.find().limit(8);
 
-				data.length === items.length && res.status(200).json({ data });
-			});
+			res.status(200).json({
+				message: 'Get Product best seller',
+				data: items,
+			})
 		}
-	} catch (error: any) {
+	} catch (error:any) {
 		res.status(404).json({
 			message: error.message,
-		});
+		})
 	}
-};
+}
 
 const checkDeletedProduct = async () => {
 	// console.log('Get and check deleted product about 30 days from now');
