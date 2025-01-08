@@ -10,6 +10,7 @@ import supplierRouter from './src/routers/supplier';
 import storage from './src/routers/storage';
 import { verifyToken } from './src/middlewares/verifyToken';
 import customerRouter from './src/routers/customerRouter';
+import cartRouter from './src/routers/cartRouter';
 
 
 dotenv.config();
@@ -37,6 +38,7 @@ app.use(verifyToken);
 
 app.use('/storage',storage);
 app.use('/supplier', supplierRouter);
+app.use('/carts', cartRouter);
 
 app.use(verifyToken);
 
