@@ -2,19 +2,21 @@ import mongoose, { Schema } from "mongoose";
 
 
 const schema = new Schema({
-    createdBy:{
+    createdBy: {
         type: String,
         required: true,
     },
 
-    count:{
+    count: {
         type: Number,
     },
 
-    subProductId:{
+    subProductId: {
         type: String,
         required: true,
     },
+
+    image: String,
 
     size: String,
 
@@ -25,6 +27,8 @@ const schema = new Schema({
     qty: Number,
 
     productId: String,
+
+    title: String,
 });
 
 const CartModel = mongoose.model('carts', schema);

@@ -25,14 +25,15 @@ export const verifyToken = (req: any, res: any, next: any) => {
 			accesstoken,
 			process.env.SECRET_KEY as string
 		);
+		// console.log(verfy)
 
-		 // Kiểm tra nếu token không hợp lệ thì ném lỗi
+		// Kiểm tra nếu token không hợp lệ thì ném lỗi
 		if (!verfy) {
 			throw new Error('Invalid token');
 		}
 
 		// Gán id người dùng vào đối tượng req để có thể sử dụng ở các middleware hoặc route khác
-		req._id = verfy._id;
+		req.uid = verfy._id;
 
 		// Gọi hàm next để chuyển đến middleware hoặc route tiếp theo
 		next();
