@@ -6,10 +6,10 @@ const addCartProduct = async (req: any, res: any) => {
     console.log(body,id);
     try {
         if (id) {
-            await CartModel.findByIdAndUpdate(id, body);
+            const items = await CartModel.findByIdAndUpdate(id, body);
             res.status(200).json({
                 message: 'Add Product',
-                data: [],
+                data: [items],
             })
         } else {
             const item = new CartModel(body);

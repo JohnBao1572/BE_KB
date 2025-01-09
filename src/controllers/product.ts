@@ -331,6 +331,7 @@ const getProductDetail = async (req: any, res: any) => {
 
 const removeSubProduct = async (req: any, res: any) => {
 	const { id, isSoftDelete } = req.query;
+	// const {id} = req.query;
 	try {
 		if (isSoftDelete) {	
 			await SubProductModel.findByIdAndUpdate(id, {
@@ -339,7 +340,7 @@ const removeSubProduct = async (req: any, res: any) => {
 		} else {
 			await SubProductModel.findByIdAndDelete(id);
 		}
-
+		// await SubProductModel.findByIdAndDelete(id);
 		res.status(200).json({
 			message: 'Removed!!!',
 		});
