@@ -36,7 +36,7 @@ app.use('/promotions', promotionRouter);
 
 app.use(verifyToken);
 
-app.use('/storage',storage);
+app.use('/storage', storage);
 app.use('/supplier', supplierRouter);
 app.use('/carts', cartRouter);
 
