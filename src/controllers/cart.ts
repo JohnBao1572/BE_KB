@@ -1,3 +1,4 @@
+import AddressModel from "../models/AddressModel";
 import CartModel from "../models/CartModel";
 
 const addCartProduct = async (req: any, res: any) => {
@@ -34,7 +35,7 @@ const updateProductInCart = async (req: any, res: any) => {
 
     try {
         // const items = await CartModel.findByIdAndUpdate(id, body);
-        
+
         // Thêm new: true là do mặc định biến mới tạo trên sẽ trả về dữ liệu trước khi cập nhật.
         // Thêm new: true vào sẽ trả về dữ liệu sau khi cập nhật.
         const items = await CartModel.findByIdAndUpdate(id, body, { new: true }); // Thêm { new: true }
@@ -97,7 +98,7 @@ const clearCardByUser = async (req: any, res: any) => {
 
         res.status(200).json({
             message: 'Clear order cart success',
-            data: [],
+            data: cartItems,
         })
     } catch (error: any) {
         res.status(404).json({
@@ -106,6 +107,72 @@ const clearCardByUser = async (req: any, res: any) => {
     }
 }
 
+const addNewAddress = async (req: any, res: any) => {
+    const body = req.body;
 
+    const { isDefault } = body;
 
-export { addCartProduct, getCartItems, removeCartItem, clearCardByUser, updateProductInCart }
+    const uid = req.uid;
+    try {
+        const item = new AddressModel(body);
+        await item.save();
+
+        // Nếu không cập nhật trạng thái isDefault của địa chỉ cũ,  người dùng có thể có nhiều địa chỉ mặc định cùng lúc, điều này có thể gây ra lỗi logic trong hệ thống.
+        if (isDefault) {
+            const defaultAddress = await AddressModel.findOne({
+                $and: [{ createdBy: uid }, { isDefault: true }],
+            });
+
+            if (defaultAddress) {
+                await AddressModel.findByIdAndUpdate(defaultAddress._id, { isDefault: false, });
+            }
+        }
+        else {
+            res.status(200).json({
+                message: 'Add new address IF success',
+                data: item,
+            })
+        }
+    } catch (error: any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+const updateNewAddress = async (req: any, res: any) => {
+    const { id } = req.query;
+    const body = req.body;
+
+    try {
+        await AddressModel.findByIdAndUpdate(id, body);
+        const item = await AddressModel.findById(id);
+
+        res.status(200).json({
+            message: 'update address IF success',
+            data: item,
+        })
+    } catch (error: any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+const getAddressCus=  async(req:any, res:any) =>{
+    // Lấy id từ người dùng để lấy địa chỉ người dùng đó đã upgrade địa chỉ (Không lấy địa chỉ acc người khác)
+    const id = req.uid;
+    try {
+        const item = await AddressModel.find({createdBy: id});
+        res.status(200).json({
+            message: 'Get Address Cus Added',
+            data: item,
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+export { addCartProduct, getCartItems, removeCartItem, clearCardByUser, updateProductInCart, addNewAddress, updateNewAddress, getAddressCus }
