@@ -159,20 +159,35 @@ const updateNewAddress = async (req: any, res: any) => {
     }
 }
 
-const getAddressCus=  async(req:any, res:any) =>{
+const getAddressCus = async (req: any, res: any) => {
     // Lấy id từ người dùng để lấy địa chỉ người dùng đó đã upgrade địa chỉ (Không lấy địa chỉ acc người khác)
     const id = req.uid;
     try {
-        const item = await AddressModel.find({createdBy: id});
+        const item = await AddressModel.find({ createdBy: id });
         res.status(200).json({
             message: 'Get Address Cus Added',
             data: item,
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
             message: error.message,
         })
     }
 }
 
-export { addCartProduct, getCartItems, removeCartItem, clearCardByUser, updateProductInCart, addNewAddress, updateNewAddress, getAddressCus }
+const deleteAddressCus = async (req:any, res:any) =>{
+    const {id} = req.query;
+    try {
+        const item = await AddressModel.findByIdAndDelete(id);
+        res.status(200).json({
+            message: 'Delete Address Cus success',
+            data: item,
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message:error.message,
+        })
+    }
+}
+
+export { addCartProduct, getCartItems, removeCartItem, clearCardByUser, updateProductInCart, addNewAddress, updateNewAddress, getAddressCus, deleteAddressCus }
