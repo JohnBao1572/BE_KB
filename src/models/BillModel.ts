@@ -8,17 +8,17 @@ const scheme = new Schema({
 		type: Number,
 	},
 
-	status:{
+	status: {
 		type: Number,
 		default: 0,
 	},
 
-	customer_id:{
+	customer_id: {
 		type: String,
 		required: true,
 	},
 
-	shippingAddress:{
+	shippingAddress: {
 		type: {
 			name: String,
 			phoneNumber: String,
@@ -27,7 +27,7 @@ const scheme = new Schema({
 	},
 
 	paymentStatus: {
-		type:Number,
+		type: Number,
 		default: 0,
 	},
 

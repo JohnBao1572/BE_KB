@@ -3,15 +3,15 @@ import { addCartProduct, addNewAddress, clearCardByUser, deleteAddressCus, getAd
 
 const router = Router();
 
-router.post('/add-cart', addCartProduct);
+router.post('/add-new', addCartProduct);
 router.put('/update', updateProductInCart);
 router.get('/', getCartItems);
-router.delete('/remove-cart', removeCartItem);
-router.post('/addNewAddress', addNewAddress);
-router.put('/updateNewAddress', updateNewAddress);
-router.get('/getAddCus', getAddressCus);
-router.delete('/deleteAddCus', deleteAddressCus);
-router.get('/clearCart', clearCardByUser);
+router.delete('/remove', removeCartItem);
+router.post('/add-new-address', addNewAddress);
+router.put('/update-address', updateNewAddress);
+router.get('/get-address', getAddressCus);
+router.delete('/remove-address', deleteAddressCus);
+router.get('/clear-carts', clearCardByUser);
 
 
 export default router;
