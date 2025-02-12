@@ -11,3 +11,5 @@ router.use(verifyToken);
 router.post('/add-new', addNewRe);
 router.put('/update', updateRe);
 router.get('/get-start-count', getData);
+
+export default router;

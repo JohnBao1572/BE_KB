@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { error } from 'console';
-import Userrouter from './src/routers/user';
+import userRouter from './src/routers/user';
 import cors from 'cors'
 import productRouter from './src/routers/productRouter';
 import promotionRouter from './src/routers/promotionRouter';
@@ -11,6 +11,9 @@ import storage from './src/routers/storage';
 import { verifyToken } from './src/middlewares/verifyToken';
 import customerRouter from './src/routers/customerRouter';
 import cartRouter from './src/routers/cartRouter';
+import rewiewRouter from './src/routers/reviewCus';
+import storageRouter from './src/routers/storage';
+
 
 
 dotenv.config();
@@ -26,17 +29,24 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
+	next();
+});
 
 
-app.use('/auth', Userrouter);
+app.use('/auth', userRouter);
 app.use('/customers', customerRouter);
 // Để product trên verify là để người dùng có thể thấy sản phẩm khi chưa đăng nhập nhưng để tránh việc khách hàng có thể tạo sản phẩm thì tôi sẽ gán thêm router verify trong router Product
 app.use('/products', productRouter);
 app.use('/promotions', promotionRouter);
+app.use('/reviews', rewiewRouter);
 
 app.use(verifyToken);
 
-app.use('/storage', storage);
+app.use('/storage', storageRouter);
 app.use('/supplier', supplierRouter);
 app.use('/carts', cartRouter);
 
