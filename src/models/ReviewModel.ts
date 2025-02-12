@@ -2,45 +2,45 @@ import mongoose, { Schema } from "mongoose";
 
 const schema = new Schema(
     {
-        comment:{
-            type:String,
+        comment: {
+            type: String,
             required: true,
         },
 
-        star:{
+        star: {
             type: Number,
-            required: true,
+            default: 0,
         },
 
-        createdBy:{
+        createdBy: {
             type: String,
             required: true,
         },
 
-        parentId:{
+        parentId: {
             type: String,
             required: true,
         },
 
-        images:[String],
+        images: [String],
 
-        like:{
-            type:[String],
+        like: {
+            type: [String],
             default: [],
         },
 
-        dislike:{
+        dislike: {
             type: [String],
-            default:[],
+            default: [],
         },
 
-        isDeleted:{
+        isDeleted: {
             type: Boolean,
             default: false,
         },
     },
-    {timestamps: true}
+    { timestamps: true }
 )
 
-const ReviewModel = mongoose.model('reviews',schema);
+const ReviewModel = mongoose.model('reviews', schema);
 export default ReviewModel;
