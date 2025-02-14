@@ -13,7 +13,7 @@ import customerRouter from './src/routers/customerRouter';
 import cartRouter from './src/routers/cartRouter';
 import rewiewRouter from './src/routers/reviewCus';
 import storageRouter from './src/routers/storage';
-
+import paymentRouter from './src/routers/paymentRouter';
 
 
 dotenv.config();
@@ -49,6 +49,7 @@ app.use(verifyToken);
 app.use('/storage', storageRouter);
 app.use('/supplier', supplierRouter);
 app.use('/carts', cartRouter);
+app.use('/payments', paymentRouter);
 
 app.use(verifyToken);
 
