@@ -4,7 +4,7 @@ import CartModel from "../models/CartModel";
 const addCartProduct = async (req: any, res: any) => {
     const { id } = req.query;
     const body = req.body;
-    console.log(body, id);
+    // console.log(body, id);
     try {
         if (id) {
             const items = await CartModel.findByIdAndUpdate(id, body);
@@ -20,8 +20,6 @@ const addCartProduct = async (req: any, res: any) => {
                 data: item,
             })
         }
-
-
     } catch (error: any) {
         res.status(404).json({
             message: error.message,
