@@ -14,7 +14,7 @@ const router = Router();
 router.post('/add-bill', addBill);
 router.get('/get-bill-admin', getBillForAdmin);
 router.get('/', getBillCustomer);
-router.delete('/delete-bill-cus', customerDeleteBill);
+router.delete('/delete-bill', customerDeleteBill);
 
 router.post('/test-sendmail', async (req, res) => {
     try {
