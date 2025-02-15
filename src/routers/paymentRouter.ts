@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addBill } from "../controllers/paymentController";
+import { addBill, customerDeleteBill, getBillCustomer, getBillForAdmin } from "../controllers/paymentController";
 import { verifyToken } from "../middlewares/verifyToken";
 import { handleSendMail } from "../utils/handleSendmail";
 import path from "path";
@@ -12,6 +12,9 @@ const html = readFileSync(htmlFile, 'utf-8');
 const router = Router();
 
 router.post('/add-bill', addBill);
+router.get('/get-bill-admin', getBillForAdmin);
+router.get('/', getBillCustomer);
+router.delete('/delete-bill-cus', customerDeleteBill);
 
 router.post('/test-sendmail', async (req, res) => {
     try {
