@@ -171,4 +171,29 @@ const login = async (req: any, res: any) => {
     }
 }
 
-export { create, getVerifyCode, resendCode, login };
+const updateCus = async(req:any, res:any) =>{
+    const body= req.body;
+    const {id} = req.uid;
+
+    try {
+        const customer = await CustomerModel.findById(id)
+        if(!customer){
+            throw new Error('Acc customer not found');
+        }
+
+        await CustomerModel.findByIdAndUpdate(id, body);
+
+        const newUpdateCus = await CustomerModel.findById(id).select('-password');
+
+        res.status(200).json({
+            message: 'Update new acc customer',
+            data: newUpdateCus,
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+export { create, getVerifyCode, resendCode, login, updateCus };

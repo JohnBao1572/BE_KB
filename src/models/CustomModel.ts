@@ -31,6 +31,8 @@ const schema = new Schema({
         default: Date.now,
     },
 
+    photoURL: String,
+
     updatedAt: {
         type: Date,
         default: Date.now,
