@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addCartProduct, addNewAddress, clearCardByUser, deleteAddressCus, getAddressCus, getCartItems, removeCartItem, updateNewAddress, updateProductInCart } from "../controllers/cart";
+import { addCartProduct, addNewAddress, clearCardByUser, deleteAddressCus, getAddressCus, getAddressCusToAdmin, getCartItems, removeCartItem, updateNewAddress, updateProductInCart } from "../controllers/cart";
 
 const router = Router();
 
@@ -12,6 +12,7 @@ router.put('/update-address', updateNewAddress);
 router.get('/get-address', getAddressCus);
 router.delete('/remove-address', deleteAddressCus);
 router.get('/clear-carts', clearCardByUser);
+router.get('/get-addCus-ToAdmin', getAddressCusToAdmin);
 
 
 export default router;

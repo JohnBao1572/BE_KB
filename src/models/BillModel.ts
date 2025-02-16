@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { type } from 'os';
 
 const scheme = new Schema({
 	products: [],
@@ -34,6 +35,11 @@ const scheme = new Schema({
 	paymentMethod: {
 		type: String,
 		default: 'cod',
+	},
+
+	paymentStatusTag:{
+		type: Number,
+		default: 0,
 	}
 });
 

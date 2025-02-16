@@ -173,6 +173,23 @@ const getAddressCus = async (req: any, res: any) => {
     }
 }
 
+const getAddressCusToAdmin = async(req:any, res:any)=>{
+    const {id} = req.query;
+
+    try {
+        const item = await AddressModel.find(id);
+
+        res.status(200).json({
+            message: 'Get Address Cus to Admin success',
+            data: item,
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
 const deleteAddressCus = async (req:any, res:any) =>{
     const {id} = req.query;
     try {
@@ -188,4 +205,4 @@ const deleteAddressCus = async (req:any, res:any) =>{
     }
 }
 
-export { addCartProduct, getCartItems, removeCartItem, clearCardByUser, updateProductInCart, addNewAddress, updateNewAddress, getAddressCus, deleteAddressCus }
+export { addCartProduct, getCartItems, removeCartItem, clearCardByUser, updateProductInCart, addNewAddress, updateNewAddress, getAddressCus, deleteAddressCus, getAddressCusToAdmin }
