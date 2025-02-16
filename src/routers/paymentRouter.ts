@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addBill, customerDeleteBill, getBillCustomer, getBillForAdmin } from "../controllers/paymentController";
+import { addBill, customerDeleteBill, getBillCustomer, getBillForAdmin, updateOrderForCustom } from "../controllers/paymentController";
 import { verifyToken } from "../middlewares/verifyToken";
 import { handleSendMail } from "../utils/handleSendmail";
 import path from "path";
@@ -15,6 +15,7 @@ router.post('/add-bill', addBill);
 router.get('/get-bill-admin', getBillForAdmin);
 router.get('/', getBillCustomer);
 router.delete('/delete-bill', customerDeleteBill);
+router.put('/update', updateOrderForCustom);
 
 router.post('/test-sendmail', async (req, res) => {
     try {

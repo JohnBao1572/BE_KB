@@ -117,4 +117,26 @@ const customerDeleteBill = async (req: any, res: any) => {
     }
 };
 
-export { addBill, getBillForAdmin, getBillCustomer, customerDeleteBill }
+const updateOrderForCustom = async(req:any, res:any) =>{
+    const {id} = req.query;
+    const body = req.body;
+
+    try {
+        const item = await BillModel.findByIdAndUpdate(id, body, {new:true})
+
+        if(!item){
+            throw new Error('Not found order from Cus');
+        }
+
+        res.status(200).json({
+            message: 'Update order success',
+            data: item,
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+export { addBill, getBillForAdmin, getBillCustomer, customerDeleteBill, updateOrderForCustom }

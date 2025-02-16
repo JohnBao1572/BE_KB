@@ -34,7 +34,7 @@ const updateProductInCart = async (req: any, res: any) => {
     try {
         // const items = await CartModel.findByIdAndUpdate(id, body);
 
-        // Thêm new: true là do mặc định biến mới tạo trên sẽ trả về dữ liệu trước khi cập nhật.
+        // Không new: true là do mặc định biến mới tạo trên sẽ trả về dữ liệu trước khi cập nhật.
         // Thêm new: true vào sẽ trả về dữ liệu sau khi cập nhật.
         const items = await CartModel.findByIdAndUpdate(id, body, { new: true }); // Thêm { new: true }
 
