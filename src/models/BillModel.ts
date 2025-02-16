@@ -40,7 +40,17 @@ const scheme = new Schema({
 	paymentStatusTag:{
 		type: Number,
 		default: 0,
-	}
+	},
+
+	createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+	
+    updatedAt: {
+        type: Date,
+        default: Date.now,
+    }
 });
 
 const BillModel = mongoose.model('bills', scheme);

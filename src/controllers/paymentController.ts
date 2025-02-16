@@ -19,16 +19,34 @@ const addBill = async (req: any, res: any) => {
         const newBill = new BillModel(body);
         await newBill.save();
 
+        const productsDetails = newBill.products.map((product: any) => {
+            return `
+                <p>
+                Title: ${product.title}
+                <br>
+                <p>Image:</p>
+                <img src="${product.image}" alt="${product.title}" width="100">
+                <br>
+                Count: ${product.count}
+                </p>
+            `;
+        }).join('');
+
         await handleSendMail({
             from: 'Me',
             to: 'jonnguyen1572@gmail.com',
+            // from: 'Me',
+            // to: CustomerModel.findById(email: email._id),
+
             html: `
             <h1>Đơn hàng mới đã được đặt</h1>
             <p>
             Mã đơn hàng: ${newBill._id}
             <br>
-            Tổng tiền: ${newBill.total}
-            </p>`,
+            </p>
+             ${productsDetails}
+             <br>
+            Tổng tiền: ${newBill.total}`,
             subject: 'Đơn hàng mới do khách vừa order',
         });
 
