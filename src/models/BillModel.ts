@@ -37,11 +37,6 @@ const scheme = new Schema({
 		default: 'cod',
 	},
 
-	paymentStatusTag:{
-		type: Number,
-		default: 0,
-	},
-
 	createdAt: {
         type: Date,
         default: Date.now,

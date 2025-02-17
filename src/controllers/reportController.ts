@@ -1,8 +1,8 @@
 import BillModel from "../models/BillModel";
 import ReportModel from "../models/ReportModel";
 
-const existUpdateBillToReport = async(req:any, res:any)=>{
-    const {date} = req.body
+const existUpdateBillToReport = async (req: any, res: any) => {
+    const { date } = req.body
 
     try {
         if (!date) {
@@ -52,7 +52,7 @@ const existUpdateBillToReport = async(req:any, res:any)=>{
         await newReport.save();
 
         res.status(201).json({ message: 'Daily report generated successfully', data: newReport });
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
             message: error.message,
         })

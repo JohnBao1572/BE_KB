@@ -141,7 +141,7 @@ const updateOrderForCustom = async(req:any, res:any) =>{
 
     try {
         if (body.paymentStatus === 1) {
-            body.paymentStatusTag = 2;
+            body.status = 2;
         }
 
         const item = await BillModel.findByIdAndUpdate(id, body, {new:true})
