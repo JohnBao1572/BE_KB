@@ -107,18 +107,44 @@ const getMonthlyReport = async (req: any, res: any) => {
     }
 }
 
-// Hàm get tổng bill
-const getTotalBill = async(req:any, res:any) =>{
+// Hàm get tổng bill, profit 
+const getTotalBill = async (req: any, res: any) => {
     try {
-        const bill = await BillModel.find({paymentStatus: 1})
-        const totalToReport = bill.reduce((a,b) => a + b.total, 0);
-        const totalProfit = totalToReport * 0.7
+        const bill = await BillModel.find({ paymentStatus: 1 })
+        const totalToReport = bill.reduce((a, b) => a + b.total, 0);
+        const totalProfit = totalToReport * 0.7;
+
+        const toDay = new Date().toISOString().split('T')[0];
+        const month = toDay.substring(0,7);
+
+        const reportExist = await ReportModel.findOne({date: toDay});
+
+        if(reportExist){
+            reportExist.revenue = totalToReport;
+            reportExist.profit = totalProfit;
+            reportExist.totalOrders = bill.length
+            await reportExist.save();
+
+            res.status(200).json({
+                message:'Total bill report updated successfully',
+                data: reportExist,
+            })
+        }
+
+        const newReport = new ReportModel({
+            date: toDay,
+            month,
+            revenue: totalToReport,
+            profit: totalProfit,
+            totalOrders: bill.length,
+        })
+        await newReport.save();
 
         res.status(200).json({
-            message: 'Get total to report success',
-            data: {totalToReport, totalProfit},
+            message: 'Total bill report generated successfully',
+            data: newReport,
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
             message: error.message,
         })
@@ -126,35 +152,45 @@ const getTotalBill = async(req:any, res:any) =>{
 }
 
 // Hàm get thông tin sản phẩm top 5 sản phẩm được mua nhìu nhất
-const get5ProductBought = async(req:any, res:any) =>{
+const get5ProductBought = async (req: any, res: any) => {
     try {
-        const bill = await BillModel.find({paymentStatus: 1});
-        const productBestSeller : {[key: string]:any} = {};
+        const bill = await BillModel.find({ paymentStatus: 1 });
+        const productBestSeller: { [key: string]: any } = {};
 
         bill.forEach(bill => {
             bill.products.forEach((products: any) => {
-                if(!productBestSeller[products.productId]){
-                    productBestSeller[products.productId] = {...products, count: 0}
+
+                // Kiểm tra nếu sản phẩm đó chưa có trong productBestSeller, thì thêm vào với count = 0.
+                if (!productBestSeller[products.productId]) {
+
+                    // Cộng dồn số lượng sản phẩm (count) vào productBestSeller[products.productId].count.
+                    productBestSeller[products.productId] = { ...products, count: 0 }
                 }
                 productBestSeller[products.productId].count += products.count;
             })
         })
 
-        const topSelling = Object.values(productBestSeller).sort((a:any, b:any) => b.count - a.count).slice(0,5);
+        // Khi b.count > a.count, ta có số dương → Đẩy b lên trước a.
+        // Khi b.count < a.count, ta có số âm → Đẩy a lên trước b.
+        // Nếu dùng dấu (< hoặc >) thì nó sẽ trả về true false chứ không phải trả về con số => sort() không biết phải sắp xếp thế nào → kết quả không đúng.
+        // Vậy nên mới dùng dấu (-) để trả về con số => sort() hiểu và sắp xếp chính xác → kết quả đúng.
+
+        // Object.values(productBestSeller): Lấy tất cả sản phẩm từ productBestSeller dưới dạng mảng
+        const topSelling = Object.values(productBestSeller).sort((a: any, b: any) => b.count - a.count).slice(0, 5);
 
         res.status(200).json({
             message: 'Get product best sell',
             data: topSelling,
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
             message: error.message,
         })
     }
 }
 
-export { getDailyReport, getMonthlyReport, existUpdateBillToReport, getTotalBill,get5ProductBought }
- 
+export { getDailyReport, getMonthlyReport, existUpdateBillToReport, getTotalBill, get5ProductBought }
+
 
 // const getDailyReport = async (req: any, res: any) => {
 //     const { date } = req.query;
