@@ -119,7 +119,7 @@ const getBillCustomer = async (req: any, res: any) => {
 }
 
 const customerDeleteBill = async (req: any, res: any) => {
-    const {id} = req.query;
+    const { id } = req.query;
 
     try {
         await BillModel.findByIdAndDelete(id);
@@ -128,15 +128,15 @@ const customerDeleteBill = async (req: any, res: any) => {
             message: 'Delete bill success',
             data: [],
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
             message: error.message,
         })
     }
 };
 
-const updateOrderForCustom = async(req:any, res:any) =>{
-    const {id} = req.query;
+const updateOrderForCustom = async (req: any, res: any) => {
+    const { id } = req.query;
     const body = req.body;
 
     try {
@@ -144,9 +144,9 @@ const updateOrderForCustom = async(req:any, res:any) =>{
             body.status = 2;
         }
 
-        const item = await BillModel.findByIdAndUpdate(id, body, {new:true})
+        const item = await BillModel.findByIdAndUpdate(id, body, { new: true })
 
-        if(!item){
+        if (!item) {
             throw new Error('Not found order from Cus');
         }
 
@@ -154,7 +154,7 @@ const updateOrderForCustom = async(req:any, res:any) =>{
             message: 'Update order success',
             data: item,
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
             message: error.message,
         })
