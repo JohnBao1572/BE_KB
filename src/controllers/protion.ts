@@ -25,6 +25,44 @@ const addNewPromotion = async (req: any, res: any) => {
     }
 };
 
+const checkDiscountCode = async(req:any, res:any)=>{
+    const {code} = req.query;
+
+    try {
+        const item: any = await PromotionModel.findOne({code});
+
+        if(!item){
+            throw new Error('Invalid code')
+        }
+
+        if(item.numOfAvalable <= 0){
+            throw new Error('Code is unvaible');
+        }
+
+        const now = Date.now();
+
+        if(new Date(item.startAt).getTime() > now){
+            throw new Error('Code is not start time');
+        }
+
+        if(item.endAt && new Date(item.endAt).getTime() < now){
+            throw new Error('Code is ended')
+        }
+
+        res.status(200).json({
+            message: 'Promotions value',
+            data: {
+                value: item._doc.value,
+                type: item._doc.type,
+            }
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
 const getPromotions = async (req: any, res: any) => {
     const body = req.body;
     const {limit} = req.query;
@@ -82,4 +120,4 @@ const deletePromotion = async (req: any, res: any) => {
     }
 }
 
-export { addNewPromotion, getPromotions, updatePromotion, deletePromotion };
+export { addNewPromotion, getPromotions, updatePromotion, deletePromotion, checkDiscountCode };

@@ -114,6 +114,11 @@ const getTotalBill = async (req: any, res: any) => {
         const totalToReport = bill.reduce((a, b) => a + b.total, 0);
         const totalProfit = totalToReport * 0.7;
 
+        // toDay: Lấy ngày hiện tại theo định dạng YYYY-MM-DD.
+        // month: Lấy năm và tháng từ toDay (ví dụ 2025-02)
+
+        // toISOString() là một phương thức của đối tượng Date trong JavaScript, trả về ngày và giờ theo định dạng chuẩn ISO 8601 "YYYY-MM-DDTHH:mm:ss.sssZ"
+        // Phương thức split('T') chia chuỗi ISO tại vị trí dấu T giữa ngày và giờ. Phần đầu là ngày (YYYY-MM-DD). Phần sau là giờ (HH:mm:ss.sssZ).
         const toDay = new Date().toISOString().split('T')[0];
         const month = toDay.substring(0,7);
 

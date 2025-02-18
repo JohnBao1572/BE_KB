@@ -35,6 +35,10 @@ const schema = new Schema({
         require: true,
     },
 
+    productIds:{
+        type: [String],
+    },
+
     endAt: Date,
 
     imageURL: String,
