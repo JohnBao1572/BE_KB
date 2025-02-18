@@ -1,3 +1,4 @@
+import { count } from "console";
 import BillModel from "../models/BillModel";
 import ReportModel from "../models/ReportModel";
 
@@ -27,7 +28,7 @@ const existUpdateBillToReport = async (req: any, res: any) => {
 
         const totalOrders = bills.length;
         const totalRevenue = bills.reduce((acc, bill) => acc + bill.total, 0);
-        const totalProfit = totalRevenue * 0.2; // Giả định lợi nhuận là 20% doanh thu
+        const totalProfit = totalRevenue * 0.7; // Giả định lợi nhuận là 20% doanh thu
 
         // Kiểm tra nếu báo cáo đã tồn tại thì cập nhật
         const existingReport = await ReportModel.findOne({ date });
@@ -59,6 +60,7 @@ const existUpdateBillToReport = async (req: any, res: any) => {
     }
 }
 
+// Hàm report theo ngày
 const getDailyReport = async (req: any, res: any) => {
     const { date } = req.query;
 
@@ -83,6 +85,7 @@ const getDailyReport = async (req: any, res: any) => {
     }
 }
 
+// Hàm report tháng
 const getMonthlyReport = async (req: any, res: any) => {
     const { month } = req.query;
 
@@ -104,17 +107,54 @@ const getMonthlyReport = async (req: any, res: any) => {
     }
 }
 
-export { getDailyReport, getMonthlyReport, existUpdateBillToReport }
+// Hàm get tổng bill
+const getTotalBill = async(req:any, res:any) =>{
+    try {
+        const bill = await BillModel.find({paymentStatus: 1})
+        const totalToReport = bill.reduce((a,b) => a + b.total, 0);
+        const totalProfit = totalToReport * 0.7
 
-// import { title } from "process";
-// import BillModel from "../models/BillModel";
-// import CustomerModel from "../models/CustomModel";
-// import { handleSendMail } from "../utils/handleSendmail";
-// import { url } from "inspector";
-// import NotificationModel from "../models/NotificationModel";
-// import { resolveSoa } from "dns";
-// import mongoose from "mongoose";
-// import ReportModel from "../models/ReportModel"; // Đảm bảo bạn đã import ReportModel
+        res.status(200).json({
+            message: 'Get total to report success',
+            data: {totalToReport, totalProfit},
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+// Hàm get thông tin sản phẩm top 5 sản phẩm được mua nhìu nhất
+const get5ProductBought = async(req:any, res:any) =>{
+    try {
+        const bill = await BillModel.find({paymentStatus: 1});
+        const productBestSeller : {[key: string]:any} = {};
+
+        bill.forEach(bill => {
+            bill.products.forEach((products: any) => {
+                if(!productBestSeller[products.productId]){
+                    productBestSeller[products.productId] = {...products, count: 0}
+                }
+                productBestSeller[products.productId].count += products.count;
+            })
+        })
+
+        const topSelling = Object.values(productBestSeller).sort((a:any, b:any) => b.count - a.count).slice(0,5);
+
+        res.status(200).json({
+            message: 'Get product best sell',
+            data: topSelling,
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+export { getDailyReport, getMonthlyReport, existUpdateBillToReport, getTotalBill,get5ProductBought }
+ 
 
 // const getDailyReport = async (req: any, res: any) => {
 //     const { date } = req.query;

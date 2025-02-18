@@ -4,6 +4,7 @@ import { generatorRandomText } from "../utils/generatorRandomText";
 import bcrypt from 'bcrypt'
 import { getAccesstoken } from "../utils/getAccesstoken";
 import { handleSendMail } from "../utils/handleSendmail";
+import { emit } from "process";
 
 
 const getVerifyCode = async (req: any, res: any) => {
@@ -138,23 +139,23 @@ const create = async (req: any, res: any) => {
 const login = async (req: any, res: any) => {
     const body = req.body;
 
-    const {email, password} = body;
+    const { email, password } = body;
     try {
-        const customer:any = await CustomerModel.findOne({email});
-        if(!customer){
+        const customer: any = await CustomerModel.findOne({ email });
+        if (!customer) {
             throw new Error('Email not found');
         }
 
         const isMatchPassword = await bcrypt.compare(password, customer.password);
-        if(!isMatchPassword){
+        if (!isMatchPassword) {
             throw new Error('Password is incorrect');
         }
 
-        const item = {...customer._doc};
+        const item = { ...customer._doc };
         delete item.password;
         // delete item.verifyCode;
 
-        const accesstoken = await getAccesstoken({_id: customer._id, email});
+        const accesstoken = await getAccesstoken({ _id: customer._id, email });
         console.log("Generated accesstoken:", accesstoken);
         item.accesstoken = accesstoken;
 
@@ -164,20 +165,20 @@ const login = async (req: any, res: any) => {
             message: 'Login Successfully',
             data: item,
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
             message: error.message,
         })
     }
 }
 
-const updateCus = async(req:any, res:any) =>{
-    const body= req.body;
-    const {id} = req.uid;
+const updateCus = async (req: any, res: any) => {
+    const body = req.body;
+    const { id } = req.uid;
 
     try {
         const customer = await CustomerModel.findById(id)
-        if(!customer){
+        if (!customer) {
             throw new Error('Acc customer not found');
         }
 
@@ -189,11 +190,12 @@ const updateCus = async(req:any, res:any) =>{
             message: 'Update new acc customer',
             data: newUpdateCus,
         })
-    } catch (error:any) {
+    } catch (error: any) {
         res.status(404).json({
             message: error.message,
         })
     }
 }
+
 
 export { create, getVerifyCode, resendCode, login, updateCus };
