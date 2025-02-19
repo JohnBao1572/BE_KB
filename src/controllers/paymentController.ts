@@ -155,8 +155,34 @@ const updateOrderForCustom = async (req: any, res: any) => {
             // Validate qty hiện có của sản phẩm, sau khi addBill thì qty - count của addBill
             const bill = await BillModel.findById(id);
             if(bill){
+
+                // For of: Hỗ trợ await: Chờ từng lần cập nhật hoàn tất trước khi tiếp tục vòng lặp.
+                // for (const product of bill.products) {
+                //     await SubProductModel.findByIdAndUpdate(product.subProductId, {
+                //         $inc: { qty: -product.count }
+                //     });
+                // }
+
+                // forEach: await không hoạt động như mong đợi!. 
+                // ++ forEach không chờ các lần cập nhật hoàn tất, mà tiếp tục ngay lập tức.
+
+                // bill.products.forEach(async (product) => {
+                //     await SubProductModel.findByIdAndUpdate(product.subProductId, {
+                //         $inc: { qty: -product.count }
+                //     });
+                // });
+
+
+                // for: Hỗ trợ await (như for...of). nhưng phải làm dài hơn
+                // for (let i = 0; i < bill.products.length; i++) {
+                //     await SubProductModel.findByIdAndUpdate(bill.products[i].subProductId, {
+                //         $inc: { qty: -bill.products[i].count }
+                //     });
+                // }
                 for(const product of bill.products){
                     await SubProductModel.findByIdAndUpdate(product.subProductId, {
+
+                        // $inc là viết tắt của "increment" (tăng hoặc giảm giá trị số).
                         $inc: {qty: -product.count}
                     })
                 }

@@ -1,6 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import { type } from "os";
 
+// extends Document: Kế thừa từ Document giúp Mongoose nhận diện đây là một tài liệu MongoDB.
+//Các trường có dấu ? là không bắt buộc.
 interface IPromotion extends Document {
     title: string;
     description?: string;
@@ -29,20 +31,20 @@ const schema = new Schema<IPromotion>({
         required: true,
     },
 
-    value:{
-        type:Number,
-        required:true,
+    value: {
+        type: Number,
+        required: true,
     },
 
     // Số lượng khuyến mãi khả dụng
-    numOfAvailable:{
-        type:Number,
+    numOfAvailable: {
+        type: Number,
         default: 100,
     },
 
-    type:{
-        type:String,
-        default:'discount',
+    type: {
+        type: String,
+        default: 'discount',
     },
 
     startAt: {
@@ -50,7 +52,7 @@ const schema = new Schema<IPromotion>({
         require: true,
     },
 
-    productIds:{
+    productIds: {
         type: [String],
     },
 
@@ -58,7 +60,7 @@ const schema = new Schema<IPromotion>({
 
     imageURL: String,
 
-    isDeleted:{
+    isDeleted: {
         type: Boolean,
         default: false,
     },
@@ -66,8 +68,9 @@ const schema = new Schema<IPromotion>({
 }, { timestamps: true });
 
 // Phương thức giảm số lượng mã giảm giá
-schema.methods.decrementAvailable = async function(){
-    if(this.numOfAvailable > 0){
+// decrementAvailable() là một phương thức dùng để giảm số lượng khuyến mãi khả dụng.
+schema.methods.decrementAvailable = async function () {
+    if (this.numOfAvailable > 0) {
         this.numOfAvailable -= 1;
         await this.save()
     }
