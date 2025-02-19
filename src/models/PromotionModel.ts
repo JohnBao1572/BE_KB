@@ -1,7 +1,22 @@
 import mongoose, { Schema } from "mongoose";
 import { type } from "os";
 
-const schema = new Schema({
+interface IPromotion extends Document {
+    title: string;
+    description?: string;
+    code: string;
+    value: number;
+    numOfAvailable: number;
+    type: string;
+    startAt: Date;
+    productIds?: string[];
+    endAt?: Date;
+    imageURL?: string;
+    isDeleted: boolean;
+    decrementAvailable: () => Promise<void>;
+}
+
+const schema = new Schema<IPromotion>({
     title: {
         type: String,
         required: true,
@@ -49,6 +64,14 @@ const schema = new Schema({
     },
     // timestamp là thời gian tạo thời gian kết thúc
 }, { timestamps: true });
+
+// Phương thức giảm số lượng mã giảm giá
+schema.methods.decrementAvailable = async function(){
+    if(this.numOfAvailable > 0){
+        this.numOfAvailable -= 1;
+        await this.save()
+    }
+}
 
 const PromotionModel = mongoose.model('Promotion', schema);
 

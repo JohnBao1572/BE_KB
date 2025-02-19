@@ -4,6 +4,8 @@ import CustomerModel from "../models/CustomModel";
 import { handleSendMail } from "../utils/handleSendmail";
 import NotificationModel from "../models/NotificationModel";
 import mongoose from "mongoose";
+import PromotionModel from "../models/PromotionModel";
+import SubProductModel from "../models/SubProductModel";
 
 const addBill = async (req: any, res: any) => {
     const body = req.body;
@@ -11,6 +13,15 @@ const addBill = async (req: any, res: any) => {
 
     try {
         // console.log(body);
+
+        // Validate số lượng code khi khách hàng đã dùng mã code thì mã code đó sẽ giảm 1
+        if (body.discountCode) {
+            const promotion = await PromotionModel.findOne({ code: body.discountCode });
+
+            if (promotion) {
+                await promotion.decrementAvailable();
+            }
+        }
 
         body.customer_id = uid;
         const customer: any = await CustomerModel.findById(uid);
@@ -140,6 +151,16 @@ const updateOrderForCustom = async (req: any, res: any) => {
     try {
         if (body.paymentStatus === 1) {
             body.status = 2;
+
+            // Validate qty hiện có của sản phẩm, sau khi addBill thì qty - count của addBill
+            const bill = await BillModel.findById(id);
+            if(bill){
+                for(const product of bill.products){
+                    await SubProductModel.findByIdAndUpdate(product.subProductId, {
+                        $inc: {qty: -product.count}
+                    })
+                }
+            }
         }
 
         const item = await BillModel.findByIdAndUpdate(id, body, { new: true })
