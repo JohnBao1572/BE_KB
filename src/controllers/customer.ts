@@ -40,6 +40,7 @@ const getVerifyCode = async (req: any, res: any) => {
             isDeleted: false,
         })
 
+        
         const accesstoken = getAccesstoken({ _id: customer._id, email: customer._doc.email, rule: 1 });
 
         delete customer._doc.password

@@ -2,9 +2,7 @@ import { title } from "process";
 import BillModel from "../models/BillModel";
 import CustomerModel from "../models/CustomModel";
 import { handleSendMail } from "../utils/handleSendmail";
-import { url } from "inspector";
 import NotificationModel from "../models/NotificationModel";
-import { resolveSoa } from "dns";
 import mongoose from "mongoose";
 
 const addBill = async (req: any, res: any) => {
