@@ -16,6 +16,7 @@ import storageRouter from './src/routers/storage';
 import paymentRouter from './src/routers/paymentRouter';
 import notificationRouter from './src/routers/notification';
 import reportRouter from './src/routers/reportRouter';
+import listItem from './src/routers/listItem';
 
 
 dotenv.config();
@@ -54,6 +55,7 @@ app.use('/carts', cartRouter);
 app.use('/payments', paymentRouter);
 app.use('/notifications', notificationRouter);
 app.use('/reports', reportRouter);
+app.use('/wishList', listItem);
 
 app.use(verifyToken);
 
