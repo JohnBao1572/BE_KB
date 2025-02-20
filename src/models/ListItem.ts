@@ -8,10 +8,6 @@ const schema = new Schema({
         required: true,
     },
 
-    count:{
-        type: Number,
-    },
-
     subProductId: {
         type: String,
         required: true,
