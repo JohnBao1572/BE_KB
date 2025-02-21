@@ -15,7 +15,9 @@ const existUpdateBillToReport = async (req: any, res: any) => {
         // Lấy tất cả đơn hàng trong ngày đó
         const bills = await BillModel.find({
             createdAt: {
+                // là toán tử "greater than or equal to" (lớn hơn hoặc bằng).
                 $gte: new Date(`${date}T00:00:00.000Z`),
+                // là toán tử "less than" (nhỏ hơn).
                 $lt: new Date(`${date}T23:59:59.999Z`),
             },
             // paymentStatus: { $ne: 1 } viết tắt của "not equal" (không bằng).
@@ -120,18 +122,18 @@ const getTotalBill = async (req: any, res: any) => {
         // toISOString() là một phương thức của đối tượng Date trong JavaScript, trả về ngày và giờ theo định dạng chuẩn ISO 8601 "YYYY-MM-DDTHH:mm:ss.sssZ"
         // Phương thức split('T') chia chuỗi ISO tại vị trí dấu T giữa ngày và giờ. Phần đầu là ngày (YYYY-MM-DD). Phần sau là giờ (HH:mm:ss.sssZ).
         const toDay = new Date().toISOString().split('T')[0];
-        const month = toDay.substring(0,7);
+        const month = toDay.substring(0, 7);
 
-        const reportExist = await ReportModel.findOne({date: toDay});
+        const reportExist = await ReportModel.findOne({ date: toDay });
 
-        if(reportExist){
+        if (reportExist) {
             reportExist.revenue = totalToReport;
             reportExist.profit = totalProfit;
             reportExist.totalOrders = bill.length
             await reportExist.save();
 
             res.status(200).json({
-                message:'Total bill report updated successfully',
+                message: 'Total bill report updated successfully',
                 data: reportExist,
             })
         }
