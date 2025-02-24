@@ -91,4 +91,32 @@ const updateRe = async (req: any, res: any) => {
     }
 }
 
-export { addNewRe, getAll, getData, updateRe};
+const getTopReviewStar = async(req:any, res:any) =>{
+    // const {id} = req.query;
+
+    try {
+        const fiveStar = await ReviewModel.find({star: 5}).limit(5);
+        if(fiveStar.length === 5){
+            return res.status(200).json({
+                message: 'get review 5 star',
+                data: fiveStar,
+            })
+        }
+
+        const fourStar = await ReviewModel.find({star: 4});
+        
+        //Kết hợp 2 mảng
+        const topReview= [...fiveStar, ...fourStar];
+
+        res.status(201).json({
+            message: 'get review 4-5 star',
+            data: topReview,
+        })
+    } catch (error:any) {
+        res.status(404).json({
+            message: 'Can not get data',
+        })
+    }
+}
+
+export { addNewRe, getAll, getData, updateRe, getTopReviewStar};
