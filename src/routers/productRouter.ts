@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addCategory, addProduct, addSubProduct, deleteCategories, filterProducts, getBestSellers, getCategories, getCategoryDetail, getFilterValues, getProductDetail, getProducts, removeProduct, removeSubProduct, updateCategory, updateProduct, updateSubProduct } from "../controllers/product";
+import { addCategory, addProduct, addSubProduct, deleteCategories, filterProducts, getBestSellers, getCategories, getCategoryDetail, getFilterValues, getProductDetail, getProductQuery, getProducts, removeProduct, removeSubProduct, updateCategory, updateProduct, updateSubProduct } from "../controllers/product";
 import { verifyToken } from "../middlewares/verifyToken";
 
 
@@ -10,6 +10,7 @@ router.get('/get-categories', getCategories);
 router.get('/categories/detail', getCategoryDetail);
 router.get('/get-filter-values', getFilterValues);
 router.get('/get-best-seller', getBestSellers);
+router.get('/get-title-product', getProductQuery)
 
 router.use(verifyToken);
 

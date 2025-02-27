@@ -242,6 +242,29 @@ const getProducts = async (req: any, res: any) => {
 	}
 };
 
+const getProductQuery = async(req:any, res:any) =>{
+	const {title} = req.query;
+
+	try {
+		const products = await ProductModel.find({title: {$regex: title, $options: 'i'}, isDeleted:false}) // find Không phân biệt chữ hoa thường
+		if(products.length > 0){
+			res.status(200).json({
+				message: 'Get product title',
+				data: products,
+			})
+		} else{
+			res.status(201).json({
+				message: 'Not found product'
+			})
+		}
+
+	} catch (error:any) {
+		res.status(404).json({
+			message: error.message,
+		})
+	}
+}
+
 const getMinMaxPrice = async (id: string) => {
 	const subItems = await SubProductModel.find({ productId: id });
 
@@ -557,4 +580,5 @@ export {
 	removeSubProduct,
 	updateSubProduct,
 	getBestSellers,
+	getProductQuery,
 };
