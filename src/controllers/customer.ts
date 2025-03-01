@@ -40,7 +40,7 @@ const getVerifyCode = async (req: any, res: any) => {
             isDeleted: false,
         })
 
-        
+
         const accesstoken = getAccesstoken({ _id: customer._id, email: customer._doc.email, rule: 1 });
 
         delete customer._doc.password
@@ -174,8 +174,8 @@ const login = async (req: any, res: any) => {
 }
 
 const updateCus = async (req: any, res: any) => {
+    const { id } = req.query;
     const body = req.body;
-    const { id } = req.uid;
 
     try {
         const customer = await CustomerModel.findById(id)
@@ -183,9 +183,7 @@ const updateCus = async (req: any, res: any) => {
             throw new Error('Acc customer not found');
         }
 
-        await CustomerModel.findByIdAndUpdate(id, body);
-
-        const newUpdateCus = await CustomerModel.findById(id).select('-password');
+        const newUpdateCus = await CustomerModel.findByIdAndUpdate(id, body, { new: true }).select('-password');
 
         res.status(200).json({
             message: 'Update new acc customer',
@@ -198,5 +196,26 @@ const updateCus = async (req: any, res: any) => {
     }
 }
 
+// getprofile
+const getAccCus = async (req: any, res: any) => {
+    const {id} = req.query;
 
-export { create, getVerifyCode, resendCode, login, updateCus };
+    try {
+        const accCus = await CustomerModel.findById(id.trim()).select('-password');
+        if (!accCus) {
+            throw new Error('Not found acc customer');
+        }
+
+        res.status(200).json({
+            message: 'Get acc customer successfully',
+            data: accCus,
+        })
+    } catch (error: any) {
+        res.status(404).json({
+            message: error.message,
+        })
+    }
+}
+
+
+export { create, getVerifyCode, resendCode, login, updateCus, getAccCus };
