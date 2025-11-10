@@ -35,8 +35,6 @@ API Features
 
 🛒 Cart & Orders - Shopping cart and order processing
 
-💳 Payment Integration - Multiple payment methods including MoMo
-
 📊 Reports & Analytics - Sales and inventory reports
 
 🔔 Notifications - Real-time notifications and email alerts
